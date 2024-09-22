@@ -1,0 +1,38 @@
+.add-item-input {
+  width: 50px;
+  border: 1px solid rgb(205, 204, 204);
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.add-items-row td {
+  text-align: center;
+}
+.add-item-input-text {
+  width: 150px;
+  outline: none;
+  border: 1px solid rgb(205, 204, 204);
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.add-items-select {
+  outline: none;
+  border: 1px solid rgb(205, 204, 204);
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.add-items-row {
+  background-color: rgb(241, 241, 241);
+}
+.item-action-save {
+  font: bold;
+  color: green;
+  cursor: pointer;
+}
+.item-action-delete {
+  font: bold;
+  color: red;
+  cursor: pointer;
+}
