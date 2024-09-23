@@ -82,6 +82,12 @@ const AddSale = () => {
       toast.error(error.message);
     }
   };
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      setAddRow((prev) => [...prev, addRow[addRow.length - 1] + 1]);
+    }
+  };
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -161,7 +167,11 @@ const AddSale = () => {
               <th>AMOUNT</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            style={{ outline: "none" }}
+          >
             {addRow.map((val, index) => (
               <AddItem
                 key={index}
