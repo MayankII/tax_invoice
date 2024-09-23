@@ -1,0 +1,39 @@
+.transaction-main-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.transaction-second-div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.transaction-second-div input {
+  width: 200px;
+  height: 30px;
+  border-radius: 7px;
+  outline: none;
+  border: 1px solid rgb(216, 212, 212);
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+.transaction-second-div button {
+  color: white;
+  background-color: rgb(91, 183, 219);
+  border: none;
+  width: 100px;
+  height: 30px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.transaction-second-div form button {
+  background-color: skyblue;
+  width: 40px;
+  margin-left: 10px;
+}
+.transactions-table {
+  margin-top: 10px;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

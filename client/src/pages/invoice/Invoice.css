@@ -1,0 +1,84 @@
+.invoice-main-container {
+  width: 90%;
+  box-sizing: border-box;
+  margin-inline: 5%;
+  margin-top: 25px;
+  border: 1px solid rgb(232, 231, 231);
+}
+.invoice-heading {
+  text-align: center;
+  width: 100%;
+  padding-top: 20px;
+}
+.invoice-heading span {
+  font-weight: bold;
+  font-size: large;
+}
+.customer-invoice-details-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  border-top: 1px solid rgb(232, 231, 231);
+  box-sizing: border-box;
+  padding-inline: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.customer-details-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.invoice-details-div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.customer-invoice-details-heading-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(171, 158, 248);
+  padding: 10px;
+}
+.customer-details-heading,
+.invoice-details-heading {
+  color: white;
+}
+.customer-name {
+  font-weight: bold;
+}
+.invoice-thead {
+  background-color: rgb(171, 158, 248);
+  color: white;
+}
+.invoice-third-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+.invoice-third-right-div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.invoice-third-right-div-heading {
+  box-sizing: border-box;
+  padding: 9px;
+  background-color: rgb(171, 158, 248);
+  color: white;
+}
+.invoice-third-right-div-data {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.invoice-third-right-div-data-total {
+  font-weight: bold;
+  border-top: 1px solid rgb(232, 231, 231);
+}

@@ -41,8 +41,9 @@ const AddItem = ({
       toast.error("All fields are required to save an item");
       return;
     }
-    setShow(false);
+
     pushItemData(itemData);
+    setShow(false);
     addTotalAmount(calculationData.totalAmount);
   };
   const removeItem = () => {

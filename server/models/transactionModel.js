@@ -59,6 +59,9 @@ const transactionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    check: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

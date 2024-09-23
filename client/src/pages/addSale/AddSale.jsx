@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AddSale.css";
 import AddItem from "./AddItem.jsx";
+import toast from "react-hot-toast";
 const AddSale = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [roundoff, setRoundoff] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [check, setCheck] = useState(false);
+
   const [data, setData] = useState({
     customerName: "",
     customerPhone: "",
@@ -15,9 +17,10 @@ const AddSale = () => {
     items: [],
     paymentType: "cash",
     receivedAmount: "",
+    check: false,
   });
   const [addRow, setAddRow] = useState([1, 2]);
-
+  const navigate = useNavigate();
   const fetchTransactions = async () => {
     try {
       const res = await fetch("/api/transaction/get", {
@@ -40,13 +43,15 @@ const AddSale = () => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  let itemsArray = [];
+
   const pushItemData = (itemdata) => {
-    itemsArray.push(itemdata);
+    setData((prev) => ({ ...prev, items: [...prev.items, itemdata] }));
   };
   const deleteItem = (itemName) => {
-    const result = itemsArray.filter((val) => val.itemName !== itemName);
-    itemsArray = result;
+    setData((prev) => ({
+      ...prev,
+      items: prev.items.filter((val) => val.itemName !== itemName),
+    }));
   };
   const addTotalAmount = (amount) => {
     setTotalAmount(totalAmount + amount);
@@ -54,11 +59,34 @@ const AddSale = () => {
   const removeTotalAmount = (amount) => {
     setTotalAmount(totalAmount - amount);
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/transaction/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const resData = await res.json();
+      if (resData.success) {
+        toast.success(resData.message);
+        navigate(`/invoice/${data.invoiceNumber}`);
+      } else {
+        toast.error(resData.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
   useEffect(() => {
     fetchTransactions();
   }, []);
   return (
-    <form className="add-sale-main-container">
+    <form onSubmit={handleSubmit} className="add-sale-main-container">
       <div className="add-sale-header-div">
         <h2>Sale</h2>
       </div>
@@ -173,10 +201,10 @@ const AddSale = () => {
             <div className="round-off">
               <input
                 type="checkbox"
-                checked={check}
-                value={check}
+                checked={data.check}
+                value={data.check}
                 onChange={() => {
-                  setCheck(!check);
+                  setData((prev) => ({ ...prev, check: !prev.check }));
                   setRoundoff(totalAmount - Math.floor(totalAmount));
                 }}
               />
@@ -191,7 +219,7 @@ const AddSale = () => {
               <span>Total </span>
               <input
                 type="number"
-                value={check ? Math.floor(totalAmount) : totalAmount}
+                value={data.check ? Math.floor(totalAmount) : totalAmount}
                 onChange={(e) => setTotalAmount(e.target.value)}
               />
             </div>
@@ -213,7 +241,7 @@ const AddSale = () => {
                 onChange={(e) => setBalance(e.target.value)}
                 value={
                   totalAmount && data.receivedAmount
-                    ? check
+                    ? data.check
                       ? Math.floor(totalAmount) - data.receivedAmount
                       : totalAmount - data.receivedAmount
                     : balance
@@ -222,6 +250,9 @@ const AddSale = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="add-sale-footer">
+        <button type="submit">Save</button>
       </div>
     </form>
   );
