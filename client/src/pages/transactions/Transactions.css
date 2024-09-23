@@ -37,3 +37,7 @@
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+.print-invoice {
+  width: 30px;
+  cursor: pointer;
+}

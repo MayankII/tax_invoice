@@ -4,6 +4,7 @@
   margin-inline: 5%;
   margin-top: 25px;
   border: 1px solid rgb(232, 231, 231);
+  margin-bottom: 50px;
 }
 .invoice-heading {
   text-align: center;
@@ -81,4 +82,73 @@
 .invoice-third-right-div-data-total {
   font-weight: bold;
   border-top: 1px solid rgb(232, 231, 231);
+}
+.invoice-fourth-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.invoice-fourth-div div {
+  width: 50%;
+  border: 1px solid rgb(232, 231, 231);
+}
+.invoice-fourth-div-left {
+  display: flex;
+  flex-direction: column;
+}
+.invoice-fourth-div-left div {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+.invoice-fourth-div-left-heading {
+  background-color: rgb(171, 158, 248);
+  color: white;
+}
+.invoice-last-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.invoice-last-div div {
+  width: 50%;
+  box-sizing: border-box;
+
+  border: 1px solid rgb(232, 231, 231);
+}
+.invoice-last-div-left {
+  display: flex;
+  flex-direction: column;
+}
+.invoice-last-div-left div {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.invoice-last-div-left-heading {
+  background-color: rgb(171, 158, 248);
+  color: white;
+}
+.invoice-last-div-left-content {
+  height: 120px;
+}
+.invoice-last-div-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.invoice-last-div-right p,
+h4 {
+  text-align: center;
+}
+.print-full-invoice {
+  background-color: rgb(104, 192, 227);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-inline: 20px;
+  cursor: pointer;
 }

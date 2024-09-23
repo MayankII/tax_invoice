@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import "./Invoice.css";
 import { useParams } from "react-router-dom";
+import converter from "number-to-words";
 const Invoice = () => {
   const { invoiceNumber } = useParams();
   const [invoiceData, setInvoiceData] = useState();
@@ -16,7 +17,6 @@ const Invoice = () => {
       });
       const data = await res.json();
       if (data.success) {
-        console.log(data.transaction);
         setInvoiceData(data.transaction);
       } else {
         toast.error(data.message);
@@ -30,6 +30,11 @@ const Invoice = () => {
   }, []);
   return (
     <>
+      <div>
+        <button onClick={() => window.print()} className="print-full-invoice">
+          Print
+        </button>
+      </div>
       {invoiceData && (
         <div className="invoice-main-container">
           <div className="invoice-heading">
@@ -73,19 +78,22 @@ const Invoice = () => {
               {invoiceData.items &&
                 invoiceData.items.map((item, index) => {
                   totalTaxableAmount +=
-                    item.itemPrice -
-                    (item.itemDiscountPercent * item.itemPrice) / 100;
+                    (item.itemPrice -
+                      (item.itemDiscountPercent * item.itemPrice) / 100) *
+                    item.itemQuantity;
 
                   totalTaxAmount +=
-                    (item.itemTaxPercent *
+                    ((item.itemTaxPercent *
                       (
                         item.itemPrice -
                         (item.itemDiscountPercent * item.itemPrice) / 100
                       ).toFixed(3)) /
-                    100;
+                      100) *
+                    item.itemQuantity;
 
                   totalDiscount +=
-                    (item.itemDiscountPercent * item.itemPrice) / 100;
+                    ((item.itemDiscountPercent * item.itemPrice) / 100) *
+                    item.itemQuantity;
 
                   totalQuantity += item.itemQuantity;
                   return (
@@ -216,7 +224,34 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-          <div className="invoice-fourth-div"></div>
+          <div className="invoice-fourth-div">
+            <div className="invoice-fourth-div-left">
+              <div className="invoice-fourth-div-left-heading">
+                Invoice Amount In Words
+              </div>
+              <div>
+                {converter.toWords(
+                  Math.floor(totalTaxableAmount + totalTaxAmount).toFixed(2)
+                )}{" "}
+                Rupees Only
+              </div>
+            </div>
+            <div></div>
+          </div>
+          <div className="invoice-last-div">
+            <div className="invoice-last-div-left">
+              <div className="invoice-last-div-left-heading">
+                Terms and Conditions
+              </div>
+              <div className="invoice-last-div-left-content">
+                Thanks for doing business with us.
+              </div>
+            </div>
+            <div className="invoice-last-div-right">
+              <p>For : My Company</p>
+              <h4>Authorized Signatory</h4>
+            </div>
+          </div>
         </div>
       )}
     </>

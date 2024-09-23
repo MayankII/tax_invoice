@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import "./Transactions.css";
+import { FiPrinter } from "react-icons/fi";
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [searchedTransactions, setSearchedTransactions] = useState([]);
@@ -29,20 +30,7 @@ const Transactions = () => {
       transactions.filter((val) => val.customerName.includes(search))
     );
   };
-  const calculateAmount = (
-    itemPrice,
-    itemQuantity,
-    itemDiscountPercent,
-    itemTaxPercent,
-    check
-  ) => {
-    const discount = (itemDiscountPercent * itemPrice) / 100;
-    const tax = (itemTaxPercent * itemPrice) / 100;
-    let finalAmount = itemPrice + tax - discount;
-    finalAmount = finalAmount * itemQuantity;
-    finalAmount = check ? Math.floor(finalAmount) : finalAmount;
-    return finalAmount;
-  };
+
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -82,16 +70,31 @@ const Transactions = () => {
               ? transactions &&
                 searchedTransactions.map((val, index) => {
                   let grossAmount = 0;
-                  let isCheck = val.check;
-                  val.items.forEach((val) => {
-                    grossAmount += calculateAmount(
-                      val.itemPrice,
-                      val.itemQuantity,
-                      val.itemDiscountPercent,
-                      val.itemTaxPercent,
-                      isCheck
-                    );
+
+                  let totalTaxableAmount = 0;
+                  let totalTaxAmount = 0;
+                  let totalDiscount = 0;
+
+                  val.items.forEach((item) => {
+                    totalTaxableAmount +=
+                      (item.itemPrice -
+                        (item.itemDiscountPercent * item.itemPrice) / 100) *
+                      item.itemQuantity;
+
+                    totalTaxAmount +=
+                      ((item.itemTaxPercent *
+                        (
+                          item.itemPrice -
+                          (item.itemDiscountPercent * item.itemPrice) / 100
+                        ).toFixed(3)) /
+                        100) *
+                      item.itemQuantity;
+
+                    totalDiscount +=
+                      ((item.itemDiscountPercent * item.itemPrice) / 100) *
+                      item.itemQuantity;
                   });
+                  grossAmount = totalTaxableAmount + totalTaxAmount;
                   return (
                     <tr key={val.invoiceNumber}>
                       <td>{val.invoiceDate}</td>
@@ -100,30 +103,53 @@ const Transactions = () => {
                       <td>Sale</td>
                       <td>{val.paymentType}</td>
                       <td>
-                        {val.check ? grossAmount : grossAmount.toFixed(3)}
+                        {val.check
+                          ? Math.floor(grossAmount)
+                          : grossAmount.toFixed(3)}
                       </td>
                       <td>
                         {val.check
-                          ? grossAmount - val.receivedAmount
+                          ? Math.floor(grossAmount) - val.receivedAmount
                           : (grossAmount - val.receivedAmount).toFixed(3)}
                       </td>
-                      <td>act</td>
+                      <td>
+                        <FiPrinter
+                          className="print-invoice"
+                          onClick={() =>
+                            navigate(`/invoice/${val.invoiceNumber}`)
+                          }
+                        />
+                      </td>
                     </tr>
                   );
                 })
               : transactions &&
                 transactions.map((val, index) => {
                   let grossAmount = 0;
-                  let isCheck = val.check;
-                  val.items.forEach((val) => {
-                    grossAmount += calculateAmount(
-                      val.itemPrice,
-                      val.itemQuantity,
-                      val.itemDiscountPercent,
-                      val.itemTaxPercent,
-                      isCheck
-                    );
+
+                  let totalTaxableAmount = 0;
+                  let totalTaxAmount = 0;
+                  let totalDiscount = 0;
+                  val.items.forEach((item) => {
+                    totalTaxableAmount +=
+                      (item.itemPrice -
+                        (item.itemDiscountPercent * item.itemPrice) / 100) *
+                      item.itemQuantity;
+
+                    totalTaxAmount +=
+                      ((item.itemTaxPercent *
+                        (
+                          item.itemPrice -
+                          (item.itemDiscountPercent * item.itemPrice) / 100
+                        ).toFixed(3)) /
+                        100) *
+                      item.itemQuantity;
+
+                    totalDiscount +=
+                      ((item.itemDiscountPercent * item.itemPrice) / 100) *
+                      item.itemQuantity;
                   });
+                  grossAmount = totalTaxableAmount + totalTaxAmount;
                   return (
                     <tr key={val.invoiceNumber}>
                       <td>{val.invoiceDate}</td>
@@ -132,14 +158,23 @@ const Transactions = () => {
                       <td>Sale</td>
                       <td>{val.paymentType}</td>
                       <td>
-                        {val.check ? grossAmount : grossAmount.toFixed(3)}
+                        {val.check
+                          ? Math.floor(grossAmount)
+                          : grossAmount.toFixed(3)}
                       </td>
                       <td>
                         {val.check
-                          ? grossAmount - val.receivedAmount
+                          ? Math.floor(grossAmount) - val.receivedAmount
                           : (grossAmount - val.receivedAmount).toFixed(3)}
                       </td>
-                      <td>act</td>
+                      <td>
+                        <FiPrinter
+                          className="print-invoice"
+                          onClick={() =>
+                            navigate(`/invoice/${val.invoiceNumber}`)
+                          }
+                        />
+                      </td>
                     </tr>
                   );
                 })}
